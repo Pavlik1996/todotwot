@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent, useState, KeyboardEvent} from 'react';
 import {FilterValueType} from "./App";
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -33,9 +33,14 @@ export const AddItemForm = (props: PropsType) => {
         minWidth: '38px',
     }
 
+    const onKeyUpHandler = (e: KeyboardEvent<HTMLDivElement>) => {
+        if (e.code === "Enter") addTask()
+    }
+
     return (
         <div>
             <TextField
+                onKeyUp={onKeyUpHandler}
                 error={!!error}
                 size={'small'}
                 id="standard-basic"
