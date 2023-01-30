@@ -60,16 +60,14 @@ export const TodoList = (props: PropsType) => {
                                     </IconButton>
                                 </li>
                             )
-                        }) : <span>task list is empty</span>}
-                    <div>
-                        <Button variant={props.filter === 'all' ? 'outlined' : 'contained'} color={'success'}
-                                onClick={() => onClickGetFilter("all")}>all</Button>
-                        <Button variant={props.filter === 'active' ? 'outlined' : 'contained'} color={'secondary'}
-                                onClick={() => onClickGetFilter("active")}>active</Button>
-                        <Button variant={props.filter === 'completed' ? 'outlined' : 'contained'} color={'error'}
-                                onClick={() => onClickGetFilter("completed")}>completed</Button>
-                    </div>
+                        }) : <div>task list is empty</div>}
                 </ul>
+                    <Button variant={props.filter === 'all' ? 'outlined' : 'contained'} color={'success'}
+                            onClick={() => onClickGetFilter("all")}>all</Button>
+                    <Button variant={props.filter === 'active' ? 'outlined' : 'contained'} color={'secondary'}
+                            onClick={() => onClickGetFilter("active")}>active</Button>
+                    <Button variant={props.filter === 'completed' ? 'outlined' : 'contained'} color={'error'}
+                            onClick={() => onClickGetFilter("completed")}>completed</Button>
             </div>
         );
     }
