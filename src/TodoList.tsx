@@ -19,6 +19,8 @@ type PropsType = {
     deleteTodoList: (todoID: string) => void
     addTask: (todoID: string, newTitle: string) => void
     changeFilter: (todoID: string, newFilter: FilterValueType) => void
+    updateTodo: (todoID: string, newTitle: string) => void
+    updateTask: (todoID: string, taskID: string, newTitle: string) => void
 }
 
 export const TodoList = (props: PropsType) => {
@@ -32,10 +34,16 @@ export const TodoList = (props: PropsType) => {
         const addTaskHandler = (newTitle: string) => {
             props.addTask(props.id, newTitle)
         }
+        const updateTodoHandler = (newTitle: string) => {
+            props.updateTodo(props.id, newTitle)
+        }
+        const updateTaskHandler = (taskID: string, newTitle: string) => {
+          props.updateTask(props.id, taskID, newTitle)
+        }
         return (
             <div>
                 <h3>
-                    <EditableSpan oldTitle={props.title}/>
+                    <EditableSpan oldTitle={props.title} callBack={updateTodoHandler}/>
                     <IconButton aria-label="delete" onClick={onClickHandler}>
                         <DeleteIcon/>
                     </IconButton>
@@ -54,7 +62,7 @@ export const TodoList = (props: PropsType) => {
                                 <li key={el.id}>
                                     <Checkbox checked={el.isDone}
                                               onChange={onChangeHandler}/>
-                                    <EditableSpan oldTitle={el.title}/>
+                                    <EditableSpan oldTitle={el.title} callBack={(title) => updateTaskHandler(el.id, title)}/>
                                     <IconButton aria-label="delete" onClick={onClickHandler}>
                                         <DeleteIcon/>
                                     </IconButton>
@@ -62,12 +70,12 @@ export const TodoList = (props: PropsType) => {
                             )
                         }) : <div>task list is empty</div>}
                 </ul>
-                    <Button variant={props.filter === 'all' ? 'outlined' : 'contained'} color={'success'}
-                            onClick={() => onClickGetFilter("all")}>all</Button>
-                    <Button variant={props.filter === 'active' ? 'outlined' : 'contained'} color={'secondary'}
-                            onClick={() => onClickGetFilter("active")}>active</Button>
-                    <Button variant={props.filter === 'completed' ? 'outlined' : 'contained'} color={'error'}
-                            onClick={() => onClickGetFilter("completed")}>completed</Button>
+                <Button variant={props.filter === 'all' ? 'outlined' : 'contained'} color={'success'}
+                        onClick={() => onClickGetFilter("all")}>all</Button>
+                <Button variant={props.filter === 'active' ? 'outlined' : 'contained'} color={'secondary'}
+                        onClick={() => onClickGetFilter("active")}>active</Button>
+                <Button variant={props.filter === 'completed' ? 'outlined' : 'contained'} color={'error'}
+                        onClick={() => onClickGetFilter("completed")}>completed</Button>
             </div>
         );
     }

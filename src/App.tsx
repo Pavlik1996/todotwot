@@ -12,7 +12,7 @@ import Toolbar from '@mui/material/Toolbar';
 import {Container, Grid, Paper} from "@mui/material";
 
 
-type TodoListType = {
+export type TodoListType = {
     id: string, title: string, filter: FilterValueType
 }
 
@@ -22,7 +22,7 @@ export type TaskType = {
     id: string, title: string, isDone: boolean
 }
 
-type StateTasksType = {
+export type StateTasksType = {
     [key: string]: TaskType[]
 }
 
@@ -53,15 +53,11 @@ function App() {
         ]
     })
 
-
-    console.log('tasks', tasks)
-
     const changeStatusTask = (todoID: string, taskID: string, newIsDone: boolean) => {
-        setTasks({...tasks, [todoID]: [...tasks[todoID].map(el => el.id === taskID ? {...el, isDone: newIsDone} : el)]})
+        setTasks({...tasks, [todoID]: tasks[todoID].map(el => el.id === taskID ? {...el, isDone: newIsDone} : el)})
     }
-
     const deleteTask = (todoID: string, taskID: string) => {
-        setTasks({...tasks, [todoID]: [...tasks[todoID].filter(el => el.id !== taskID)]})
+        setTasks({...tasks, [todoID]: tasks[todoID].filter(el => el.id !== taskID)})
     }
     const deleteTodoList = (todoID: string) => {
         setTodoList(todoList.filter(el => el.id !== todoID))
@@ -69,10 +65,8 @@ function App() {
     }
     const addTask = (todoID: string, newTitle: string) => {
         const newTask: TaskType = {id: v1(), title: newTitle, isDone: false}
-        console.log('addTask', newTask)
         setTasks({...tasks, [todoID]: [newTask, ...tasks[todoID]]})
     }
-
     const changeFilter = (todoID: string, newFilter: FilterValueType) => {
         setTodoList(todoList.map(el => el.id === todoID ? {...el, filter: newFilter} : el))
     }
@@ -82,7 +76,12 @@ function App() {
         setTodoList([newTodo, ...todoList])
         setTasks({...tasks, [newTodoID]: []})
     }
-
+    const updateTodo = (todoID: string, newTitle: string) => {
+        setTodoList(todoList.map(el => el.id === todoID ? {...el, title: newTitle} : el))
+    }
+    const updateTask = (todoID: string, taskID: string, newTitle: string) => {
+        setTasks({...tasks, [todoID]: tasks[todoID].map(el => el.id === taskID ? {...el, title: newTitle} : el)})
+    }
 
     return (
         <div className="App">
@@ -138,10 +137,11 @@ function App() {
                                         deleteTodoList={deleteTodoList}
                                         addTask={addTask}
                                         changeFilter={changeFilter}
+                                        updateTodo={updateTodo}
+                                        updateTask={updateTask}
                                     />
                                 </Paper>
                             </Grid>
-
                         })
                     }
                 </Grid>
@@ -150,4 +150,4 @@ function App() {
     );
 }
 
-    export default App;
+export default App;

@@ -1,7 +1,8 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent, useState, KeyboardEvent} from 'react';
 
 type PropsType = {
-    oldTitle: string
+    oldTitle: string,
+    callBack: (title: string) => void
 }
 
 export const EditableSpan = (props: PropsType) => {
@@ -10,16 +11,20 @@ export const EditableSpan = (props: PropsType) => {
 
     const onDoubleClickHandler = () => {
         setEdit(!edit)
+        props.callBack(newTitle)
     }
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setNewTitle(e.currentTarget.value)
     }
-    
 
+    const onKeyDownHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') onDoubleClickHandler()
+    }
 
     return edit
-        ? <input value={newTitle} autoFocus onChange={onChangeHandler} onBlur={onDoubleClickHandler} />
+        ? <input value={newTitle} autoFocus onChange={onChangeHandler} onBlur={onDoubleClickHandler}
+                 onKeyDown={onKeyDownHandler}/>
         : <span onDoubleClick={onDoubleClickHandler}>{newTitle}</span>
 };
 

@@ -27,10 +27,10 @@ export const AddItemForm = (props: PropsType) => {
     }
 
     const styleButton = {
-        maxHeight: '38px',
-        minHeight: '38px',
-        maxWidth: '38px',
-        minWidth: '38px',
+        maxHeight: '39px',
+        minHeight: '39px',
+        maxWidth: '39px',
+        minWidth: '39px',
     }
 
     const onKeyUpHandler = (e: KeyboardEvent<HTMLDivElement>) => {
