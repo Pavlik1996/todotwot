@@ -22,7 +22,7 @@ export type TaskType = {
     id: string, title: string, isDone: boolean
 }
 
-export type StateTasksType = {
+export type TasksStateType = {
     [key: string]: TaskType[]
 }
 
@@ -36,7 +36,7 @@ function App() {
         {id: todoID2, title: 'What to buy', filter: 'all'},
     ])
 
-    const [tasks, setTasks] = useState<StateTasksType>({
+    const [tasks, setTasks] = useState<TasksStateType>({
         [todoID1]: [
             {id: v1(), title: 'HTML', isDone: true},
             {id: v1(), title: 'CSS', isDone: true},
@@ -56,29 +56,36 @@ function App() {
     const changeStatusTask = (todoID: string, taskID: string, newIsDone: boolean) => {
         setTasks({...tasks, [todoID]: tasks[todoID].map(el => el.id === taskID ? {...el, isDone: newIsDone} : el)})
     }
+
     const deleteTask = (todoID: string, taskID: string) => {
         setTasks({...tasks, [todoID]: tasks[todoID].filter(el => el.id !== taskID)})
     }
+
     const deleteTodoList = (todoID: string) => {
         setTodoList(todoList.filter(el => el.id !== todoID))
         delete tasks[todoID]
     }
+
     const addTask = (todoID: string, newTitle: string) => {
         const newTask: TaskType = {id: v1(), title: newTitle, isDone: false}
         setTasks({...tasks, [todoID]: [newTask, ...tasks[todoID]]})
     }
+
     const changeFilter = (todoID: string, newFilter: FilterValueType) => {
         setTodoList(todoList.map(el => el.id === todoID ? {...el, filter: newFilter} : el))
     }
+
     const addTodoList = (title: string) => {
         const newTodoID = v1();
         const newTodo: TodoListType = {id: newTodoID, title: title, filter: "all"}
         setTodoList([newTodo, ...todoList])
         setTasks({...tasks, [newTodoID]: []})
     }
+
     const updateTodo = (todoID: string, newTitle: string) => {
         setTodoList(todoList.map(el => el.id === todoID ? {...el, title: newTitle} : el))
     }
+
     const updateTask = (todoID: string, taskID: string, newTitle: string) => {
         setTasks({...tasks, [todoID]: tasks[todoID].map(el => el.id === taskID ? {...el, title: newTitle} : el)})
     }

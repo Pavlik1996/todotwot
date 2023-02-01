@@ -13,12 +13,10 @@ test('correct todolist should be removed', () => {
     const todoID1 = v1()
     const todoID2 = v1()
 
-
     const startState: TodoListType[] = ([
         {id: todoID1, title: 'What to learn', filter: 'all'},
         {id: todoID2, title: 'What to buy', filter: 'all'},
     ])
-
 
     const endState = todolistReducer(startState, removeTodoListAC(todoID1))
 
@@ -31,7 +29,6 @@ test('correct todolist should be added', () => {
     const todoID2 = v1()
 
     let newTodoListTitle = 'NEW TodoList'
-
 
     const startState: TodoListType[] = ([
         {id: todoID1, title: 'What to learn', filter: 'all'},
@@ -61,7 +58,6 @@ test('correct todolist should change its name', () => {
     expect(endState[0].title).toBe('What to learn')
     expect(endState[1].title).toBe(newTodoListTitle)
 })
-
 
 test('correct todolist should change filter', () => {
     const todoID1 = v1()
