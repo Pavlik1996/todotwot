@@ -22,9 +22,11 @@ export const EditableSpan = (props: PropsType) => {
         if (e.key === 'Enter') onDoubleClickHandler()
     }
 
+
+
     return edit
         ? <input value={newTitle} autoFocus onChange={onChangeHandler} onBlur={onDoubleClickHandler}
-                 onKeyDown={onKeyDownHandler}/>
+                 onKeyDown={onKeyDownHandler} />
         : <span onDoubleClick={onDoubleClickHandler}>{newTitle}</span>
 };
 

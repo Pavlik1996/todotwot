@@ -25,6 +25,8 @@ type PropsType = {
 
 export const TodoList = (props: PropsType) => {
 
+
+
         const onClickHandler = () => {
             props.deleteTodoList(props.id)
         }

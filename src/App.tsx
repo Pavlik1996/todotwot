@@ -1,6 +1,5 @@
-import React, {useState} from 'react';
+import React from 'react';
 import './App.css';
-import {v1} from 'uuid';
 import {TodoList} from "./TodoList";
 import {AddItemForm} from "./addItemForm";
 import AppBar from '@mui/material/AppBar';
@@ -10,6 +9,15 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import {Container, Grid, Paper} from "@mui/material";
+import {
+    addTodoListAC,
+    changeFilterAC,
+    changeTodoListTitleAC,
+    removeTodoListAC,
+} from "./state/todolist-reducer";
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./state/tasks-reducer";
+import {useDispatch, useSelector} from "react-redux";
+import {AppRootStateType} from "./state/store";
 
 
 export type TodoListType = {
@@ -28,66 +36,44 @@ export type TasksStateType = {
 
 function App() {
 
-    const todoID1 = v1()
-    const todoID2 = v1()
+    const dispatch = useDispatch()
 
-    const [todoList, setTodoList] = useState<TodoListType[]>([
-        {id: todoID1, title: 'What to learn', filter: 'all'},
-        {id: todoID2, title: 'What to buy', filter: 'all'},
-    ])
+    const todoList = useSelector<AppRootStateType, TodoListType[]>(state => state.todoLists)
 
-    const [tasks, setTasks] = useState<TasksStateType>({
-        [todoID1]: [
-            {id: v1(), title: 'HTML', isDone: true},
-            {id: v1(), title: 'CSS', isDone: true},
-            {id: v1(), title: 'JS', isDone: true},
-            {id: v1(), title: 'REACT', isDone: false},
-            {id: v1(), title: 'REDUX', isDone: false},
-        ],
-        [todoID2]: [
-            {id: v1(), title: 'Milk', isDone: true},
-            {id: v1(), title: 'Bread', isDone: true},
-            {id: v1(), title: 'Butter', isDone: true},
-            {id: v1(), title: 'Meat', isDone: false},
-            {id: v1(), title: 'Tea', isDone: false},
-        ]
-    })
+    const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
 
     const changeStatusTask = (todoID: string, taskID: string, newIsDone: boolean) => {
-        setTasks({...tasks, [todoID]: tasks[todoID].map(el => el.id === taskID ? {...el, isDone: newIsDone} : el)})
+        dispatch(changeTaskStatusAC(taskID, newIsDone, todoID))
     }
 
     const deleteTask = (todoID: string, taskID: string) => {
-        setTasks({...tasks, [todoID]: tasks[todoID].filter(el => el.id !== taskID)})
+        dispatch(removeTaskAC(taskID, todoID))
     }
 
     const deleteTodoList = (todoID: string) => {
-        setTodoList(todoList.filter(el => el.id !== todoID))
-        delete tasks[todoID]
+        const action = removeTodoListAC(todoID)
+        dispatch(action)
     }
 
     const addTask = (todoID: string, newTitle: string) => {
-        const newTask: TaskType = {id: v1(), title: newTitle, isDone: false}
-        setTasks({...tasks, [todoID]: [newTask, ...tasks[todoID]]})
+        dispatch(addTaskAC(newTitle, todoID))
     }
 
     const changeFilter = (todoID: string, newFilter: FilterValueType) => {
-        setTodoList(todoList.map(el => el.id === todoID ? {...el, filter: newFilter} : el))
+        dispatch(changeFilterAC(newFilter, todoID))
     }
 
     const addTodoList = (title: string) => {
-        const newTodoID = v1();
-        const newTodo: TodoListType = {id: newTodoID, title: title, filter: "all"}
-        setTodoList([newTodo, ...todoList])
-        setTasks({...tasks, [newTodoID]: []})
+        const action = addTodoListAC(title)
+        dispatch(action)
     }
 
     const updateTodo = (todoID: string, newTitle: string) => {
-        setTodoList(todoList.map(el => el.id === todoID ? {...el, title: newTitle} : el))
+        dispatch(changeTodoListTitleAC(newTitle, todoID))
     }
 
     const updateTask = (todoID: string, taskID: string, newTitle: string) => {
-        setTasks({...tasks, [todoID]: tasks[todoID].map(el => el.id === taskID ? {...el, title: newTitle} : el)})
+        dispatch(changeTaskTitleAC(taskID, newTitle, todoID))
     }
 
     return (
@@ -105,7 +91,7 @@ function App() {
                         <MenuIcon/>
                     </IconButton>
                     <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
-                        News
+                        My ToDo
                     </Typography>
                     <Button color="inherit">Login</Button>
                 </Toolbar>

@@ -1,5 +1,4 @@
 import React, {ChangeEvent, useState, KeyboardEvent} from 'react';
-import {FilterValueType} from "./App";
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
